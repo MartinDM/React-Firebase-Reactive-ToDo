@@ -24,14 +24,15 @@ const App = () => {
   }, []); // Runs only on first load
 
   const getToDos = () => {
-    db.collection("todos").onSnapshot((query: any) => {
+    db.collection("todos").orderBy('timestamp','desc').onSnapshot((query: any) => {
       setTodos(
         query.docs.map((doc: any) => ({
           id: doc.id,
-          todo: doc.data().task,
+          task: doc.data().task,
           completed: doc.data().completed,
         })
       ));
+      console.log(todos);
     });
   };
 
@@ -68,12 +69,12 @@ const App = () => {
                 Add
               </Button>
             </form>
-            {todos.map( (todo: IToDo) => (
+            {todos.map( (item: IToDo) => (
               <Todo
-                todo={todo.task}
-                completed={todo.completed}
-                id={todo.id}
-                key={todo.id}
+                task={item.task}
+                completed={item.completed}
+                id={item.id}
+                key={item.id}
               ></Todo>
             ))}
           </CardContent>
