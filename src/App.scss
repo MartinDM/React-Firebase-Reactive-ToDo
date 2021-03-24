@@ -1,3 +1,53 @@
+body {
+  margin: 0;
+  font-size: 62.5%;
+}
+
 .App {
-  background-color: var(--blue); 
+  background: var(--blue);
+  background: rgb(168,246,255);
+  background: radial-gradient(circle, rgba(168,246,255,1) 0%, rgba(59,163,209,1) 78%);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  p {
+    margin: 6px 0;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin: 0;
+    padding: 12px;
+    color: white;
+    font-weight: bold;
+    letter-spacing: -1px;
+    font-style: italic;
+    text-transform: uppercase;
+    background: rgb(83,83,83);
+background: linear-gradient(231deg, rgba(83,83,83,1) 0%, rgba(40,40,40,1) 78%);
+    margin: 8px 0;
+    display: inline-block;
+  }
+}
+
+.empty-message {
+  text-align: center;
+  padding: 8px 0;
+  margin: 0;
+  color: #333;
+  font-size: 1.5em;
+}
+
+/* Utility classes */
+.u {
+  &-margin-0 {
+    margin: 0;
+  }
+  &-space-below {
+    margin-bottom: 1em;
+  }
+  &-margin-bottom-0 {
+    margin-bottom: 0;
+  }
 }

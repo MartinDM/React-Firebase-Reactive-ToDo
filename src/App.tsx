@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import CardContent from "@material-ui/core/CardContent";
 import "./App.scss";
 import firebase from "firebase";
 import { db } from "./firebase";
@@ -18,10 +18,17 @@ interface IToDo {
 const App = () => {
   const [todos, setTodos] = useState<IToDo[]>([]);
   const [todoInput, setTodoInput] = useState("");
+  const [isAllComplete, setAllComplete] = useState(false);
 
   useEffect(() => {
     getToDos();
   }, []); // Runs only on first load
+
+  useEffect(() => { 
+    const isComplete = !todos.find( todo => !todo.completed )
+    setAllComplete( isComplete );
+    console.log(isComplete);
+  }, [todos]);  
 
   const getToDos = () => {
     db.collection("todos").orderBy('timestamp','desc').onSnapshot((query: any) => {
@@ -44,20 +51,21 @@ const App = () => {
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setTodoInput("");
+    setAllComplete(false)
   };
 
   return (
     <div className="App">
       <Container maxWidth="sm">
+        <h1 className="App-title">Reactive Todo</h1>
         <Card>
           <CardContent>
             <form>
-              <TextField
-                id="outlined-basic"
+              <TextField 
                 value={todoInput}
                 onChange={(e) => setTodoInput(e.target.value)}
-                label="Add Todo"
-                style={{ maxWidth: "300px", width: "60vw" }}
+                label="Add Todo 📝"
+                style={{  width: "100%" }}
                 variant="outlined"
               />
               <Button
@@ -69,6 +77,9 @@ const App = () => {
                 Add
               </Button>
             </form>
+            {
+              (!todos.length && !isAllComplete) && <p className="empty-message">No items to do!</p>
+            }
             {todos.map( (item: IToDo) => (
               <Todo
                 task={item.task}
@@ -77,6 +88,9 @@ const App = () => {
                 key={item.id}
               ></Todo>
             ))}
+            {
+             (isAllComplete && <p className="empty-message">All done</p>)
+            }
           </CardContent>
         </Card>
       </Container>
