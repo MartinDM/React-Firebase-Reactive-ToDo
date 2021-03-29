@@ -27,7 +27,6 @@ const App = () => {
   useEffect(() => { 
     const isComplete = !todos.find( todo => !todo.completed )
     setAllComplete( isComplete );
-    console.log(isComplete);
   }, [todos]);  
 
   const getToDos = () => {

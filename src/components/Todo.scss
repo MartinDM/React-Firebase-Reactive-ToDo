@@ -5,4 +5,16 @@
   .MuiButton-label span {
     margin: 0;
   }
+  &__edit {
+    color: #dcdcdc;
+    padding-right: 10px;
+    font-size: 6px;
+    cursor: text;
+    &:hover {
+      color: #898989;
+    }
+  }
+  .MuiInput-formControl {
+    display: block;
+  }
 }

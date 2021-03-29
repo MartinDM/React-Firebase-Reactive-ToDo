@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CheckIcon from "@material-ui/icons/Check";
 import UndoIcon from "@material-ui/icons/Undo";
-import { ListItem, ListItemText, Button, ButtonGroup } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
+import { ListItem, ListItemText, Button, TextField, ButtonGroup } from "@material-ui/core";
 import { db } from "../firebase";
 import {
   makeStyles,
@@ -17,15 +17,20 @@ import "./Todo.scss";
 
 /* Material UI styling */
 const useStyles = makeStyles({
-  root: {},
+  root: {
+    cursor: "text"
+  },
   itemText: {
     fontWeight: "bold",
+    display: "block",
   },
   itemTextCompleted: {
     textDecoration: "line-through",
+    display: "block",
     fontWeight: "normal",
     color: grey[500],
-  },
+    opacity: ".7"
+  }
 });
 
 const theme = createMuiTheme({
@@ -36,8 +41,8 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: "#ef5350",
-    },
-  },
+    }
+  }
 });
 
 interface IProps {
@@ -47,17 +52,27 @@ interface IProps {
 }
 
 const Todo = (props: IProps) => {
+
   const classes = useStyles();
+  
+  /* Component variables */
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isCompleted, setIsComplete] = useState<boolean>(props.completed);
+  const [task, setTask] = useState<string>(props.task);
+  /* 
+  const isCompleted = props.completed; */
+  const primaryIcon = isCompleted ? <UndoIcon /> : <CheckIcon />;
 
   /* Private methods */
   const updateDone = () => {
-    console.log("Marked as done", props.id);
     db.collection("todos")
       .doc(props.id)
       .update({
         completed: !props.completed,
       })
-      .then(() => {
+      .then(() => { 
+        setIsComplete(!props.completed);
+        setIsEditing(false);
         console.log("Updated", props.id);
       })
       .catch((err) => {
@@ -80,23 +95,34 @@ const Todo = (props: IProps) => {
       });
   };
 
-  /* Component variables */
-  const isCompleted = props.completed;
-  const primaryIcon = isCompleted ? <UndoIcon /> : <CheckIcon />;
+  const handleChange = (e: any) => {
+    const newContent = e.target.value;
+    setTask(newContent);
+    db.collection("todos")
+      .doc(props.id)
+      .update({
+        task: newContent
+      })
+      .then(() => {
+        console.log("Updated", newContent);
+      })
+      .catch((err) => {
+        console.error("There was an error updating item ", props.id);
+      });
+  }
 
   return (
     <ThemeProvider theme={theme}>
       <div className="Todo">
         <ListItem>
+          {/* <EditIcon className="Todo__edit" onClick={handleEdit} /> */}
           <ListItemText
             primary={
-              <p
-                className={
-                  isCompleted ? classes.itemTextCompleted : classes.itemText
-                }
-              >
-                {props.task}
-              </p>
+              <TextField
+                value={task}
+                onInput={handleChange}
+                className={isCompleted ? classes.itemTextCompleted : classes.itemText}
+              />
             }
           ></ListItemText>
         </ListItem>
