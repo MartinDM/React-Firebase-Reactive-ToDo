@@ -6,7 +6,7 @@ This React app uses Firebase and Firestore to persist data and instantly reflect
 It uses Material UI Components and some theming, and SASS for styling.
 
 ## Demo
-The app can be viewed on Surge  [mdm-reactive-todo.surge.sh](mdm-reactive-todo.surge.sh) 🚀
+The app can be viewed on Surge  [mdm-reactive-todo.surge.sh](https://mdm-reactive-todo.surge.sh) 🚀
 
 ## Available Scripts
 To run locally, first
