@@ -9,7 +9,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "publish": "cp CNAME ./build && cd ./build && surge"
+    "publish": "cp CNAME ./dist && cd ./dist && surge"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
