@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-size: 62.5%;
+  font-family: "Ysabeau Office", sans-serif;
+}
+
+.home {
+  h1 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 12px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: -1px;
+    font-style: italic;
+    background: rgb(83, 83, 83);
+    background: linear-gradient(
+      231deg,
+      rgba(83, 83, 83, 1) 0%,
+      rgba(40, 40, 40, 1) 78%
+    );
+    margin: 8px 0;
+    span {
+      display: block;
+      font-style: initial;
+      font-weight: normal;
+      font-size: 14px;
+    }
+    img {
+      border-radius: 50%;
+      max-width: 28px;
+      margin: 0;
+      margin-left: auto;
+    }
+  }
+
+  button {
+    align-self: flex-end;
+  }
+
+  .empty-message {
+    text-align: center;
+    padding: 8px 0;
+    margin: 0;
+    color: #333;
+    font-size: 1.5em;
+    margin-left: auto;
+  }
+}

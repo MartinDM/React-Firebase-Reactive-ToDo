@@ -1,31 +1,33 @@
 import { useState, useEffect } from "react";
 import { auth, googleProvider } from "../config/firebase";
-import { getAuth, signInWithPopup, signOut } from 'firebase/auth'
+import { signInWithPopup } from 'firebase/auth'
 import GoogleButton from 'react-google-button'
+import { useNavigate } from "react-router-dom";
 
 import './Login.scss'
 
 export const Login = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
+  const navigate = useNavigate()
   useEffect(() => {
     auth.onAuthStateChanged((user) => setIsLoggedIn(!!user))
-  }, [])
+    if (isLoggedIn) {
+      navigate('/')
+    }
+  }, [navigate, isLoggedIn])
 
   const handleGoogleAuth = async () => {
-    if (getAuth().currentUser) {
-      await signOut(getAuth())
-    } else {
-      await signInWithPopup(auth, googleProvider)
-    }
+    await signInWithPopup(auth, googleProvider)
   }
+
   return (
     <>
-      <button type="button" onClick={handleGoogleAuth}>
-        <GoogleButton {...isLoggedIn && { label: `Sign out` }} />
-      </button>
-
+      <div className="login">
+        <button type="button" onClick={handleGoogleAuth}>
+          <GoogleButton />
+        </button>
+      </div>
     </>
   )
 };

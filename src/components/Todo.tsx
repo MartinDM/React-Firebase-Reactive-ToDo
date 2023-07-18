@@ -1,6 +1,9 @@
 import { useEffect, useState, } from "react";
-import { ListItem, Button, TextField, ButtonGroup } from "@mui/material";
-import { Delete, Undo, Check } from '@mui/icons-material';
+import { ListItem, TextField } from "@mui/material";
+import { Undo, Check } from '@mui/icons-material';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Stack from '@mui/material/Stack';
 
 interface IProps {
   text: string
@@ -24,31 +27,30 @@ const Todo = (props: IProps) => {
     handleUpdate(id, toDo)
   }, [toDo])
 
+
   return (
     <ListItem sx={{ justifyContent: 'space-between', p: 1, m: 0, pl: 0 }}>
       <TextField
         sx={{
           textDecoration: `${completed ? 'line-through' : 'none'}`,
+          input: { color: `${completed ? '#777777' : 'black'}` }
         }}
         value={toDo}
         onChange={handleChange}
         variant="standard"
       />
-      <ButtonGroup disableElevation size="small" variant="contained">
-        <Button
-          color={completed ? "inherit" : "primary"}
-          startIcon={completed ? <Undo /> : <Check />}
-          onClick={() => handleComplete(id, completed)}
-        >
-          {completed ? "Undo" : "Done"}
-        </Button>
-        <Button
-          startIcon={<Delete />}
-          color="secondary"
-          onClick={() => handleDelete(id)}
-        ></Button>
-      </ButtonGroup>
-    </ListItem>
+
+      <Stack direction="row" spacing={1}>
+        <IconButton onClick={() => handleComplete(id, completed)} aria-label="complete" size="small">
+          {completed ? <Undo /> : <Check />}
+        </IconButton>
+        <IconButton onClick={() => handleDelete(id)} aria-label="delete" size="small">
+          <DeleteIcon />
+        </IconButton>
+
+      </Stack>
+
+    </ListItem >
   );
 };
 
