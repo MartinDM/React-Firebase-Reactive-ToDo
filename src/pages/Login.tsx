@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
-import { auth, googleProvider } from "../config/firebase";
+import { useState, useEffect } from 'react'
+import { auth, googleProvider } from '../config/firebase'
 import { signInWithPopup } from 'firebase/auth'
 import GoogleButton from 'react-google-button'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 import './Login.scss'
 
 export const Login = () => {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate()
   useEffect(() => {
@@ -30,4 +29,4 @@ export const Login = () => {
       </div>
     </>
   )
-};
+}

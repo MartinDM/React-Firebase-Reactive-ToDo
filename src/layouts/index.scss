@@ -1,27 +1,31 @@
 body {
-    background: var(--blue);
-    background: rgb(168,246,255);
-    background: radial-gradient(circle, rgba(168,246,255,1) 0%, rgba(59,163,209,1) 78%);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    p {
+  background: var(--blue);
+  background: rgb(168, 246, 255);
+  background: radial-gradient(
+    circle,
+    rgba(168, 246, 255, 1) 0%,
+    rgba(59, 163, 209, 1) 78%
+  );
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
     margin: 6px 0;
   }
   img {
-      max-width: 300px;
-      margin: 20px auto;
-      display: block;
-    }
+    max-width: 300px;
+    margin: 20px auto;
+    display: block;
+  }
 }
 
-.app { 
-    max-width: 1200px;
-    border-radius: 10px;
-    background: rgba(255,255,255,.5);
-    box-shadow: 1px 1px 48px rgb(124 124 124 / 33%); 
-    padding: 12px;
+.app {
+  max-width: 1200px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 1px 1px 48px rgb(124 124 124 / 33%);
+  padding: 12px;
 }

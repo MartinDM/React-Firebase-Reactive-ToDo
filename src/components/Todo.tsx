@@ -1,9 +1,9 @@
-import { useEffect, useState, } from "react";
-import { ListItem, TextField } from "@mui/material";
-import { Undo, Check } from '@mui/icons-material';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Stack from '@mui/material/Stack';
+import { useEffect, useState } from 'react'
+import { ListItem, TextField } from '@mui/material'
+import { Undo, Check } from '@mui/icons-material'
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Delete'
+import Stack from '@mui/material/Stack'
 
 interface IProps {
   text: string
@@ -15,8 +15,14 @@ interface IProps {
 }
 
 const Todo = (props: IProps) => {
-
-  const { text: initialTodo, completed, id, handleDelete, handleUpdate, handleComplete } = props
+  const {
+    text: initialTodo,
+    completed,
+    id,
+    handleDelete,
+    handleUpdate,
+    handleComplete,
+  } = props
   const [toDo, setToDo] = useState(initialTodo)
 
   const handleChange = (e: any) => {
@@ -27,13 +33,12 @@ const Todo = (props: IProps) => {
     handleUpdate(id, toDo)
   }, [toDo])
 
-
   return (
     <ListItem sx={{ justifyContent: 'space-between', p: 1, m: 0, pl: 0 }}>
       <TextField
         sx={{
           textDecoration: `${completed ? 'line-through' : 'none'}`,
-          input: { color: `${completed ? '#777777' : 'black'}` }
+          input: { color: `${completed ? '#777777' : 'black'}` },
         }}
         value={toDo}
         onChange={handleChange}
@@ -41,17 +46,23 @@ const Todo = (props: IProps) => {
       />
 
       <Stack direction="row" spacing={1}>
-        <IconButton onClick={() => handleComplete(id, completed)} aria-label="complete" size="small">
+        <IconButton
+          onClick={() => handleComplete(id, completed)}
+          aria-label="complete"
+          size="small"
+        >
           {completed ? <Undo /> : <Check />}
         </IconButton>
-        <IconButton onClick={() => handleDelete(id)} aria-label="delete" size="small">
+        <IconButton
+          onClick={() => handleDelete(id)}
+          aria-label="delete"
+          size="small"
+        >
           <DeleteIcon />
         </IconButton>
-
       </Stack>
+    </ListItem>
+  )
+}
 
-    </ListItem >
-  );
-};
-
-export default Todo;
+export default Todo
