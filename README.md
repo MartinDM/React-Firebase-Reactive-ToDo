@@ -1,30 +1,20 @@
-![image](https://user-images.githubusercontent.com/7467069/112333926-ed67c400-8cb2-11eb-9262-b323a0bb9e27.png)
+<img width="475" alt="image" src="https://github.com/MartinDM/React-Firebase-Reactive-ToDo/assets/7467069/c4e12369-cd24-4ed5-9867-ea548027dbb9">
 
-# Reactive ToDo List
+# Reactive ToDo List 🔥
 
-This React app uses Firebase and Firestore to persist data and instantly reflect it in the list shown across multiple users connecting.
+This React/Vite app uses Firebase and Firestore to persist data and subscribe to data across multiple clients.
 
-Only Google-authenticated users can add Todos
-
-It uses Material UI Components and some theming, and SASS for styling.
+Only Google-authenticated users can add Todos; log in to add yours.
 
 ## Demo
 
 The app can be viewed on Surge [mdm-reactive-todo.surge.sh](https://mdm-reactive-todo.surge.sh) 🚀
 
-## Available Scripts
-
-To run locally, first
+## Run it locally
 
 ```
 yarn
 yarn run dev
 ```
 
-...which runs the app in development mode.\
-Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
-
-## Build / publish
-
-To build `yarn run build`  
- and publish `yarn run publish`
+Open [http://localhost:5173](http://localhost:5173) 👩‍🚀
