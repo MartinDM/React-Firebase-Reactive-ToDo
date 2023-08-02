@@ -11,43 +11,31 @@ import { IToDo } from '../types'
 import { db, auth } from '../config/firebase'
 import { getAuth, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import { User } from 'firebase/auth'
 
 import {
   CollectionReference,
   collection,
   addDoc,
-  getDocs,
   updateDoc,
   doc,
+  query,
+  onSnapshot,
   deleteDoc,
 } from 'firebase/firestore'
 
 export const Home = () => {
   const navigate = useNavigate()
   const [todos, setTodos] = useState<IToDo[]>([])
-  const [todo, setTodo] = useState<any | null>('')
-  const [user, setUser] = useState<any | null>('')
+  const [todo, setTodo] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [user, setUser] = useState<User | null>(null)
 
   const toDosRef: CollectionReference = collection(db, 'toDos')
-
-  const getTodos = async () => {
-    try {
-      const todos = await getDocs(toDosRef)
-      const fetchedToDos = (await todos.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }))) as IToDo[]
-      const userTodos = fetchedToDos.filter((d) => d.uid === user.uid)
-      setTodos(userTodos)
-    } catch (err) {
-      console.error(err)
-    }
-  }
 
   const handleDelete = async (id: string) => {
     const targetTodo = doc(db, 'toDos', id)
     await deleteDoc(targetTodo)
-    getTodos()
   }
 
   const handleSignOut = async () => {
@@ -64,7 +52,6 @@ export const Home = () => {
     await updateDoc(targetTodo, {
       completed: !completed,
     })
-    getTodos()
   }
 
   const handleUpdate = async (id: string, text: string) => {
@@ -72,29 +59,35 @@ export const Home = () => {
     await updateDoc(targetTodo, {
       text,
     })
-    getTodos()
   }
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
+      if (!user) return navigate('/login')
       setUser(user)
-      if (!user) {
-        navigate('/login')
-      }
     })
-    getTodos()
-  }, [user])
+
+    const q = query(collection(db, 'toDos'))
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let todosArr: IToDo[] = []
+      querySnapshot.forEach((doc) => {
+        todosArr.push({ ...doc.data(), id: doc.id } as IToDo)
+      })
+      setTodos(todosArr)
+      setIsLoading(false)
+    })
+    return () => unsubscribe()
+  }, [])
 
   const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!todo.length) return
+    if (!todo.length || !user) return
     try {
       await addDoc(toDosRef, {
         completed: false,
         text: todo,
         ...(({ displayName, uid }) => ({ displayName, uid }))(user),
       })
-      getTodos()
       setTodo('')
     } catch (err) {
       console.log(err)
@@ -113,7 +106,7 @@ export const Home = () => {
           {user && (
             <>
               <span>Welcome {user.displayName}</span>
-              <img src={user.photoURL} alt={user.displayName} />
+              <img src={user?.photoURL || ''} alt={user.displayName || ''} />
             </>
           )}
         </h1>
@@ -150,7 +143,7 @@ export const Home = () => {
                 ))}
               </List>
             )}
-            {!todos.length && (
+            {!todos.length && !isLoading && (
               <p className="empty-message">Nothing to do! 💯</p>
             )}
           </CardContent>
