@@ -21,6 +21,7 @@ import {
   doc,
   query,
   onSnapshot,
+  where,
   deleteDoc,
 } from 'firebase/firestore'
 
@@ -29,7 +30,7 @@ export const Home = () => {
   const [todos, setTodos] = useState<IToDo[]>([])
   const [todo, setTodo] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(getAuth().currentUser)
 
   const toDosRef: CollectionReference = collection(db, 'toDos')
 
@@ -63,20 +64,19 @@ export const Home = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      if (!user) return navigate('/login')
       setUser(user)
-    })
-
-    const q = query(collection(db, 'toDos'))
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let todosArr: IToDo[] = []
-      querySnapshot.forEach((doc) => {
-        todosArr.push({ ...doc.data(), id: doc.id } as IToDo)
+      if (!user) return navigate('/login')
+      const q = query(toDosRef, where('uid', '==', user.uid))
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let todosArr: IToDo[] = []
+        querySnapshot.forEach((doc) => {
+          todosArr.push({ ...doc.data(), id: doc.id } as IToDo)
+        })
+        setTodos(todosArr)
+        setIsLoading(false)
       })
-      setTodos(todosArr)
-      setIsLoading(false)
+      return () => unsubscribe()
     })
-    return () => unsubscribe()
   }, [])
 
   const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
