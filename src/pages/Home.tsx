@@ -63,6 +63,7 @@ export const Home = () => {
   }
 
   useEffect(() => {
+    console.log(user)
     auth.onAuthStateChanged((user) => {
       setUser(user)
       if (!user) return navigate('/login')
@@ -77,7 +78,7 @@ export const Home = () => {
       })
       return () => unsubscribe()
     })
-  }, [])
+  }, [user])
 
   const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -106,7 +107,7 @@ export const Home = () => {
           {user && (
             <>
               <span>Welcome {user.displayName}</span>
-              <img src={user?.photoURL || ''} alt={user.displayName || ''} />
+              <img src={user.photoURL || ''} alt={user.displayName || ''} />
             </>
           )}
         </h1>
